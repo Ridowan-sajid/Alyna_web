@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import {
+  getAvailabilityState,
+  getRoomInventoryConfig,
+  parseCalendarRoomKey,
+} from "../lib/roomInventory";
 
 const CalendarContext = createContext(null);
 
@@ -14,36 +20,11 @@ const DEFAULT_ROOMS = {
   room2: { ...EMPTY_ROOM_DATES },
 };
 
-const normalizeRoomDates = (roomData = {}) => ({
-  booked: roomData.booked || [],
-  almost: roomData.almost || [],
-  free: roomData.free || [],
-});
-
-const normalizeCalendarData = (data = {}) => {
-  const hasNestedRooms = data.rooms && typeof data.rooms === "object";
-
-  if (hasNestedRooms) {
-    return {
-      room: normalizeRoomDates(data.rooms.room),
-      room2: normalizeRoomDates(data.rooms.room2),
-    };
-  }
-
-  return {
-    room: {
-      booked: data.booked || [],
-      almost: data.almost || [],
-      free: data.free || [],
-    },
-    room2: { ...EMPTY_ROOM_DATES },
-  };
-};
-
 export function CalendarProvider({ children }) {
   const [rooms, setRooms] = useState(DEFAULT_ROOMS);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [availabilityIndex, setAvailabilityIndex] = useState({});
 
   useEffect(() => {
     let mounted = true;
@@ -57,27 +38,35 @@ export function CalendarProvider({ children }) {
 
         if (!mounted) return;
 
-        // build rooms structure
-        const roomsShape = {
-          room: { booked: [], almost: [], free: [] },
-          room2: { booked: [], almost: [], free: [] },
-        };
-
-        (data || []).forEach((r) => {
-          const roomId = r.room || "room";
-          const status = r.status || "booked";
+        const index = {};
+        (data || []).forEach((row) => {
+          const { inventoryKey, unitKey } = parseCalendarRoomKey(row.room);
           const dateStr =
-            typeof r.date === "string" ? r.date : r.date && r.date.toString();
-          if (!roomsShape[roomId])
-            roomsShape[roomId] = { booked: [], almost: [], free: [] };
-          if (roomsShape[roomId][status])
-            roomsShape[roomId][status].push(dateStr);
+            typeof row.date === "string" ? row.date : row.date && row.date.toString();
+          if (!inventoryKey || !dateStr) return;
+          if ((row.status || "booked") !== "booked") return;
+
+          if (!index[inventoryKey]) index[inventoryKey] = {};
+          if (!index[inventoryKey][dateStr]) index[inventoryKey][dateStr] = new Set();
+          index[inventoryKey][dateStr].add(unitKey || row.room);
         });
 
+        const roomsShape = {};
+        Object.entries(index).forEach(([inventoryKey, dateMap]) => {
+          const config = getRoomInventoryConfig(inventoryKey);
+          roomsShape[inventoryKey] = { booked: [], almost: [], free: [] };
+          Object.entries(dateMap).forEach(([dateStr, units]) => {
+            const status = getAvailabilityState(units.size, config.totalRooms);
+            roomsShape[inventoryKey][status].push(dateStr);
+          });
+        });
+
+        setAvailabilityIndex(index);
         setRooms(roomsShape);
       } catch (err) {
         console.error("Failed to load calendar from Supabase", err);
         setRooms(DEFAULT_ROOMS);
+        setAvailabilityIndex({});
       } finally {
         setLoading(false);
       }
@@ -141,30 +130,19 @@ export function CalendarProvider({ children }) {
   }, []);
 
   const getRoomCalendar = (roomId = "room") => {
-    // flexible lookup: try exact, numeric, and prefixed variants so stored DB keys match
     if (!roomId) return EMPTY_ROOM_DATES;
+    const config = getRoomInventoryConfig(roomId);
+    const key = config.inventoryKey;
+    return rooms[key] || EMPTY_ROOM_DATES;
+  };
 
-    const asStr = String(roomId);
-    const candidates = new Set();
-    candidates.add(asStr);
-
-    // if looks like 'room123' try '123' and vice-versa
-    if (asStr.startsWith("room")) {
-      const tail = asStr.slice(4);
-      if (tail) candidates.add(tail);
-      candidates.add(`room${tail}`);
-    } else if (/^\d+$/.test(asStr)) {
-      candidates.add(`room${asStr}`);
-    }
-
-    // also try removing any 'room-' or 'room_' prefixes
-    candidates.add(asStr.replace(/^room[-_]?/, "room"));
-
-    for (const k of candidates) {
-      if (rooms[k]) return rooms[k];
-    }
-
-    return EMPTY_ROOM_DATES;
+  const getAvailabilityStatus = (roomId, dateStr) => {
+    if (!roomId || !dateStr) return "free";
+    const config = getRoomInventoryConfig(roomId);
+    const key = config.inventoryKey;
+    const unitMap = availabilityIndex[key] || {};
+    const count = unitMap[dateStr]?.size || 0;
+    return getAvailabilityState(count, config.totalRooms);
   };
 
   const addDate = (roomId, category, date) => {
@@ -298,6 +276,7 @@ export function CalendarProvider({ children }) {
       value={{
         rooms,
         getRoomCalendar,
+        getAvailabilityStatus,
         addDate,
         removeDate,
         loading,
@@ -328,6 +307,7 @@ export function useCalendar(roomId) {
     ...roomData,
     addDate: (category, date) => ctx.addDate(roomId, category, date),
     removeDate: (category, date) => ctx.removeDate(roomId, category, date),
+    getAvailabilityStatus: (room, date) => ctx.getAvailabilityStatus(room, date),
     loading: ctx.loading,
   };
 }

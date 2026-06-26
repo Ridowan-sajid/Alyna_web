@@ -14,14 +14,17 @@ const formatLocalDate = (date) => {
 
 export default function RoomCalendar({ roomId = "room" }) {
   const [date, setDate] = useState(new Date());
-  const { booked, almost, free } = useCalendar(roomId);
+  const { getAvailabilityStatus } = useCalendar(roomId);
 
   const getClass = ({ date }) => {
     const d = formatLocalDate(date);
+    const status = getAvailabilityStatus
+      ? getAvailabilityStatus(roomId, d)
+      : "free";
 
-    if ((booked || []).includes(d)) return "day-red";
-    if ((almost || []).includes(d)) return "day-orange";
-    if ((free || []).includes(d)) return "day-green";
+    if (status === "booked") return "day-red";
+    if (status === "almost") return "day-orange";
+    return "day-green";
   };
 
   return (

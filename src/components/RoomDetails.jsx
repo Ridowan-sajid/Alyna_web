@@ -6,12 +6,18 @@ import { FaPhone } from "react-icons/fa6";
 import RoomCalendar from "./RoomCalendar";
 import { supabase } from "../lib/supabaseClient";
 import { getRoomKeyFromAcc } from "../lib/roomKey";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import OptimizedImage from "./OptimizedImage";
 import BookingCard from "./BookingCard";
+import {
+  buildBookingDraft,
+  buildRoomSnapshot,
+  saveBookingDraft,
+} from "../lib/bookingFlow";
 
 const RoomDetails = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   const [acc, setAcc] = useState(null);
   const [page, setPage] = useState(null);
@@ -52,10 +58,10 @@ const RoomDetails = () => {
               return (
                 (urlData && (urlData.publicUrl || urlData.public_url)) || img
               );
-            } catch (_e) {
-              return img;
-            }
-          }),
+          } catch {
+            return img;
+          }
+        }),
         );
 
         const accWithUrls = { ...accl, images };
@@ -133,7 +139,23 @@ const RoomDetails = () => {
 
           {/* Right Column */}
           <div className="room-sidebar scroll-animate">
-            {/* <BookingCard price={roomPrice} onBookNow={() => {}} /> */}
+            <BookingCard
+              price={roomPrice}
+              onBookNow={() => {
+                if (!acc?.id) return;
+                const roomSnapshot = buildRoomSnapshot({
+                  ...acc,
+                  image: mainImage || acc?.images?.[0],
+                });
+                saveBookingDraft(buildBookingDraft(roomSnapshot, {}));
+                navigate("/book", {
+                  state: {
+                    room: roomSnapshot,
+                    source: "room-details",
+                  },
+                });
+              }}
+            />
             <div className="complimentary-section">
               <div className="complimentary-header">
                 <LuChefHat size="24px" />
@@ -168,7 +190,16 @@ const RoomDetails = () => {
             </h5>
 
             <div className="availability-card">
-              <RoomCalendar roomId={getRoomKeyFromAcc(acc) || slug} />
+              <RoomCalendar
+                roomId={
+                  buildRoomSnapshot({
+                    ...acc,
+                    image: mainImage || acc?.images?.[0],
+                  }).inventoryKey ||
+                  getRoomKeyFromAcc(acc) ||
+                  slug
+                }
+              />
             </div>
             <div className="booking-card-container scroll-animate">
               <div className="outer-glow-border"></div>

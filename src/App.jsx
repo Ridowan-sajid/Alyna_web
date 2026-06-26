@@ -21,6 +21,9 @@ import { Analytics } from "@vercel/analytics/react";
 
 import { supabase } from "./lib/supabaseClient";
 import { useEffect } from "react";
+import BookingForm from "./components/BookingForm";
+import PaymentForm from "./components/PaymentForm";
+import ReservationConfirmed from "./components/ReservationConfirmed";
 
 function App() {
   useEffect(() => {
@@ -52,6 +55,9 @@ function App() {
               <Route path="/room" element={<Navigate to="/" replace />} />
               <Route path="/room2" element={<Navigate to="/" replace />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/book" element={<BookingForm />} />
+              <Route path="/payment" element={<PaymentForm />} />
+              <Route path="/reservation" element={<ReservationConfirmed />} />
             </Routes>
           </main>
           <Footer />

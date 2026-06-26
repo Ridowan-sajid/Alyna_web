@@ -28,6 +28,58 @@ CREATE TABLE IF NOT EXISTS accommodations (
 ALTER TABLE accommodations
   ADD COLUMN IF NOT EXISTS price NUMERIC(12,2);
 
+-- Guests and bookings for the direct React reservation flow
+CREATE TABLE IF NOT EXISTS guests (
+  id BIGSERIAL PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  nationality VARCHAR(100),
+  email VARCHAR(255),
+  ref_name VARCHAR(255),
+  ref_phone VARCHAR(20),
+  id_type VARCHAR(20),
+  id_number VARCHAR(50),
+  image_front TEXT,
+  image_back TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id BIGSERIAL PRIMARY KEY,
+  guest_id BIGINT REFERENCES guests(id),
+  room_id BIGINT,
+  checkin_date DATE NOT NULL,
+  checkout_date DATE NOT NULL,
+  adults INTEGER DEFAULT 1,
+  children INTEGER DEFAULT 0,
+  room_rate NUMERIC(10,2),
+  ac_choice VARCHAR(20),
+  base_amount NUMERIC(10,2),
+  discount_type VARCHAR(20),
+  discount_amount NUMERIC(10,2),
+  discount_reason TEXT,
+  payment_method TEXT,
+  transaction_number TEXT,
+  total_amount NUMERIC(10,2),
+  advance_amount NUMERIC(10,2) DEFAULT 0,
+  due_amount NUMERIC(10,2),
+  notes TEXT,
+  is_reservation BOOLEAN DEFAULT FALSE,
+  created_by UUID,
+  created_at TIMESTAMP DEFAULT NOW(),
+  CONSTRAINT chk_dates CHECK (checkout_date > checkin_date)
+);
+
+-- Optional calendar table for check-in / check-out ranges
+CREATE TABLE IF NOT EXISTS calendar (
+  id BIGSERIAL PRIMARY KEY,
+  booking_id BIGINT REFERENCES bookings(id) ON DELETE CASCADE,
+  room_id BIGINT,
+  check_in DATE NOT NULL,
+  check_out DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Features / facilities
 CREATE TABLE IF NOT EXISTS features (
   id SERIAL PRIMARY KEY,

@@ -1,0 +1,353 @@
+/* --- HERO BANNER SECTION --- */
+.hero-container {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6547db 0%, #6547db 100%);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Global */
+* {
+  box-sizing: border-box;
+}
+
+/* --- BOOKING FORM SECTION --- */
+.booking-page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Fixed duplicate sect-container */
+.sect-container {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 20px 40px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+/* Purple Container Box */
+.purple-card-panel {
+  background-color: #6547db;
+  padding: 60px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(99, 66, 231, 0.15);
+}
+
+.purple-card-guest {
+  background-color: #6547db;
+  padding: 60px 170px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(99, 66, 231, 0.15);
+}
+
+/* Grid Layouts */
+.grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 60px;
+}
+
+.grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Form Controls */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/* Transparent Inputs */
+.input-transparent {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 10px 12px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+.input-transparent option {
+  color: #333;
+}
+
+.input-transparent:focus {
+  border-color: white;
+}
+
+/* White Inputs */
+.input-white {
+  background-color: white;
+  border: none;
+  border-radius: 2px;
+  padding: 12px 14px;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+.textarea-white {
+  background-color: white;
+  border: none;
+  border-radius: 2px;
+  padding: 12px 14px;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  resize: none;
+  min-height: 120px;
+}
+
+/* Submit Action */
+.submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.proceed-btn {
+  background-color: #6342e7;
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(99, 66, 231, 0.2);
+  transition: background-color 0.2s;
+}
+
+.proceed-btn:hover {
+  background-color: #5132cb;
+}
+
+/* Room Summary */
+.booking-room-summary {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f5ff 0%, #ffffff 100%);
+  border: 1px solid rgba(101, 71, 219, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(101, 71, 219, 0.08);
+}
+
+.booking-room-image-wrap img,
+.room-image-preview {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.booking-room-placeholder {
+  width: 100%;
+  height: 140px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6547db 0%, #9b87ff 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.booking-room-copy h3 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  color: #1f2937;
+}
+
+.booking-room-copy p {
+  margin: 0;
+  color: #5b6472;
+  line-height: 1.6;
+}
+
+.booking-room-meta,
+.booking-total-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.booking-room-meta span {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(101, 71, 219, 0.08);
+  color: #6547db;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.booking-total-bar {
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(101, 71, 219, 0.96),
+    rgba(101, 71, 219, 0.82)
+  );
+  color: #fff;
+  box-shadow: 0 16px 35px rgba(101, 71, 219, 0.18);
+}
+
+.booking-total-bar strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.booking-total-bar p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.booking-total-value {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.booking-error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff1f2;
+  color: #b42318;
+  border: 1px solid #fecdd3;
+}
+
+.booking-page-wrapper select.input-transparent {
+  color: #fff;
+}
+
+.booking-page-wrapper select.input-transparent option {
+  color: #111827;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 768px) {
+  .grid-4-col {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .grid-2-col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .booking-room-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-total-bar {
+    align-items: flex-start;
+  }
+
+  .purple-card-panel {
+    padding: 30px 20px;
+  }
+
+  .purple-card-guest {
+    padding: 30px 20px;
+  }
+
+  .sect-container {
+    padding: 15px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-4-col {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .purple-card-panel {
+    padding: 20px 15px;
+  }
+
+  .purple-card-guest {
+    padding: 20px 15px;
+  }
+
+  .sect-container {
+    padding: 10px 15px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .proceed-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

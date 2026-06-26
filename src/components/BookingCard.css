@@ -20,19 +20,19 @@
 
 .booking-title {
   color: #ffffff;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   margin: 0;
 }
 
 .booking-price {
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .price-amount {
   font-weight: 700;
-  font-size: 1.75rem;
+  font-size: 1.1rem;
 }
 
 .book-now-btn {
@@ -44,14 +44,18 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  width: 100%;
+  width: 50%;
 }
 
 .book-now-btn:hover {
-  background-color: #d66300;
+  background-color: #ff6200;
+}
+
+.book-now-btn:focus {
+  background-color: #ff9e48;
 }
 
 /* Responsive Layout */

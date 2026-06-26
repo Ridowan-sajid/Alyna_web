@@ -1,0 +1,114 @@
+/* Container styling to center the card on the page */
+.reservation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f3f0ff; /* Soft pastel purple background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card layout */
+.reservation-card {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* --- Pure CSS 3D Checkmark Effect --- */
+.checkmark-wrapper {
+  margin-bottom: 40px;
+  display: inline-block;
+  position: relative;
+}
+
+.checkmark-circle {
+  width: 120px;
+  height: 120px;
+  background-color: #4cd964;
+  border-radius: 50%;
+  position: relative;
+  /* Soft shadow to replicate the 3D pop effect */
+  box-shadow:
+    0 8px 0 #3cb652,
+    0 15px 25px rgba(76, 217, 100, 0.4);
+}
+
+/* The white checkmark strokes */
+.checkmark-stem,
+.checkmark-kick {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 4px;
+  /* Mimics the inner shadow/3D look on the white check */
+  box-shadow: -2px 3px 0px rgba(0, 0, 0, 0.1);
+}
+
+.checkmark-stem {
+  width: 14px;
+  height: 60px;
+  left: 65px;
+  top: 26px;
+  transform: rotate(45deg);
+}
+
+.checkmark-kick {
+  width: 35px;
+  height: 14px;
+  left: 36px;
+  top: 62px;
+  transform: rotate(45deg);
+}
+
+/* --- Typography --- */
+.reservation-title {
+  color: #513894; /* Deep purple */
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+.reservation-message {
+  color: #6a52b5; /* Slightly lighter purple for text */
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0 0 40px 0;
+  max-width: 90%;
+  display: inline-block;
+}
+
+/* --- Button Styling --- */
+.back-btn {
+  background-color: #6347d1; /* Royal purple */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(99, 71, 209, 0.3);
+}
+
+.back-btn:hover {
+  background-color: #513894;
+}
+
+.back-btn:active {
+  transform: scale(0.98);
+}
+
+.arrow {
+  font-size: 1.1rem;
+}
