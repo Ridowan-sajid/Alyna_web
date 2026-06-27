@@ -58,10 +58,10 @@ const RoomDetails = () => {
               return (
                 (urlData && (urlData.publicUrl || urlData.public_url)) || img
               );
-          } catch {
-            return img;
-          }
-        }),
+            } catch {
+              return img;
+            }
+          }),
         );
 
         const accWithUrls = { ...accl, images };
@@ -139,23 +139,25 @@ const RoomDetails = () => {
 
           {/* Right Column */}
           <div className="room-sidebar scroll-animate">
-            <BookingCard
-              price={roomPrice}
-              onBookNow={() => {
-                if (!acc?.id) return;
-                const roomSnapshot = buildRoomSnapshot({
-                  ...acc,
-                  image: mainImage || acc?.images?.[0],
-                });
-                saveBookingDraft(buildBookingDraft(roomSnapshot, {}));
-                navigate("/book", {
-                  state: {
-                    room: roomSnapshot,
-                    source: "room-details",
-                  },
-                });
-              }}
-            />
+            <div className="booking-wrapper">
+              <BookingCard
+                price={roomPrice}
+                onBookNow={() => {
+                  if (!acc?.id) return;
+                  const roomSnapshot = buildRoomSnapshot({
+                    ...acc,
+                    image: mainImage || acc?.images?.[0],
+                  });
+                  saveBookingDraft(buildBookingDraft(roomSnapshot, {}));
+                  navigate("/book", {
+                    state: {
+                      room: roomSnapshot,
+                      source: "room-details",
+                    },
+                  });
+                }}
+              />
+            </div>
             <div className="complimentary-section">
               <div className="complimentary-header">
                 <LuChefHat size="24px" />
@@ -201,7 +203,10 @@ const RoomDetails = () => {
                 }
               />
             </div>
-            <div className="booking-card-container scroll-animate">
+            <div
+              className="booking-card-container scroll-animate"
+              style={{ display: "none" }}
+            >
               <div className="outer-glow-border"></div>
 
               <div className="main-booking-box">

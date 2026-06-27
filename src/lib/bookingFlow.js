@@ -77,6 +77,8 @@ export function buildRoomSnapshot(room = {}) {
     title: room.title ?? "Selected room",
     description: room.description ?? "",
     price: Number(room.price ?? 0) || 0,
+    coupon_code: room.coupon_code ?? null,
+    discount_value: Number(room.discount_value ?? 0) || 0,
     links: room.links ?? null,
     images,
     image: getRoomImage(room),

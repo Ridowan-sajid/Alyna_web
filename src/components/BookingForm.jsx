@@ -384,7 +384,7 @@ export default function BookingForm() {
             <h2 className="section-title">Select Your Date</h2>
             <div className="purple-card-panel grid-4-col">
               <div className="input-group">
-                <label>Check In</label>
+                <label>Arrival</label>
                 <input
                   type="date"
                   name="checkInDate"
@@ -395,7 +395,7 @@ export default function BookingForm() {
               </div>
 
               <div className="input-group">
-                <label>Check Out</label>
+                <label>Departure</label>
                 <input
                   type="date"
                   name="checkOutDate"
@@ -404,22 +404,8 @@ export default function BookingForm() {
                   className="input-transparent"
                 />
               </div>
-
               <div className="input-group">
-                <label>Room</label>
-                <select
-                  name="roomCount"
-                  value={formData.roomCount}
-                  onChange={handleChange}
-                  className="input-transparent"
-                >
-                  <option value="1">1 room</option>
-                  <option value="2">2 room</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label>Guests</label>
+                <label>Guest</label>
                 <select
                   name="adults"
                   value={formData.adults}
@@ -430,6 +416,18 @@ export default function BookingForm() {
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
+                </select>
+              </div>
+              <div className="input-group">
+                <label>Room</label>
+                <select
+                  name="roomCount"
+                  value={formData.roomCount}
+                  onChange={handleChange}
+                  className="input-transparent"
+                >
+                  <option value="1">1 room</option>
+                  <option value="2">2 room</option>
                 </select>
               </div>
 

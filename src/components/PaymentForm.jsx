@@ -25,8 +25,10 @@ export default function PaymentForm() {
   const [booking, setBooking] = useState(null);
   const [room, setRoom] = useState(pending?.room || null);
   const [transactionId, setTransactionId] = useState("");
+  const [couponInput, setCouponInput] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState(DEFAULT_GATEWAY);
+  const [appliedCoupon, setAppliedCoupon] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
@@ -103,12 +105,24 @@ export default function PaymentForm() {
     pending?.roomCount || pending?.formData?.roomCount || 1,
   );
   const roomTitle = pending?.roomTitle || `${roomCount} room`;
-  const bookingRoomTotal = Number(
-    booking?.total_amount ?? pending?.roomTotalAmount ?? 0,
-  );
-  const totalAmount = Number(
-    pending?.totalAmount ?? bookingRoomTotal * roomCount,
-  );
+  const roomBaseRate = Number(room?.price || booking?.room_rate || 0);
+  const roomNights = Number(pending?.nights || 0);
+  const roomCouponCode = String(room?.coupon_code || "").trim();
+  const roomDiscountValue = Number(room?.discount_value || 0) || 0;
+  const normalizedCouponInput = couponInput.trim();
+  const isCouponValid =
+    Boolean(roomCouponCode) &&
+    Boolean(appliedCoupon) &&
+    appliedCoupon.trim().toLowerCase() === roomCouponCode.toLowerCase();
+  const discountedRoomRate = isCouponValid
+    ? Math.max(roomBaseRate - roomDiscountValue, 0)
+    : roomBaseRate;
+  const perBookingBaseAmount = roomBaseRate * roomNights;
+  const perBookingDiscountAmount = isCouponValid
+    ? Math.max(perBookingBaseAmount - discountedRoomRate * roomNights, 0)
+    : 0;
+  const perBookingTotalAmount = discountedRoomRate * roomNights;
+  const totalAmount = perBookingTotalAmount * roomCount;
   const advanceAmount = Math.min(ADVANCE_AMOUNT, totalAmount || ADVANCE_AMOUNT);
 
   const handleCopyText = (type) => {
@@ -142,18 +156,29 @@ export default function PaymentForm() {
       const bookingIds = pending.bookingIds || [pending.bookingId];
       const bookingCount = bookingIds.length || 1;
       const perBookingAdvance = advanceAmount / bookingCount;
-      const perBookingDue = bookingRoomTotal;
-      // const notesParts = [];
-      // if (booking?.notes) notesParts.push(booking.notes);
-      // notesParts.push(`Payment gateway: ${selectedGateway}`);
-      // notesParts.push(`Transaction ID: ${transactionId.trim()}`);
-      // const nextNotes = notesParts.join(" | ");
+      const perBookingDue = Math.max(
+        perBookingTotalAmount - perBookingAdvance,
+        0,
+      );
+      const notesParts = [];
+      if (booking?.notes) notesParts.push(booking.notes);
+      notesParts.push(`Payment gateway: ${selectedGateway}`);
+      if (isCouponValid) {
+        notesParts.push(`Coupon: ${roomCouponCode}`);
+      }
+      notesParts.push(`Transaction ID: ${transactionId.trim()}`);
+      const nextNotes = notesParts.join(" | ");
 
       const { error: updateError } = await supabase
         .from("bookings")
         .update({
           payment_method: selectedGateway,
           transaction_number: transactionId.trim(),
+          room_rate: discountedRoomRate,
+          base_amount: perBookingBaseAmount,
+          discount_type: isCouponValid ? "coupon" : null,
+          discount_amount: perBookingDiscountAmount,
+          total_amount: perBookingTotalAmount,
           // advance_amount: perBookingAdvance,
           due_amount: perBookingDue,
           // notes: nextNotes,
@@ -245,26 +270,119 @@ export default function PaymentForm() {
               )}
               <div className="room-info">
                 <h3>{room?.title || "Selected room"}</h3>
-                <p className="room-highlight-text">
-                  {pending?.nights || 0} night(s) x {roomTitle} x ৳
-                  {room?.price || booking?.room_rate || 0}/night avg.
+                <p
+                  className={`room-highlight-text ${isCouponValid ? "room-highlight-text--original" : ""}`}
+                >
+                  {roomNights || 0} night(s) x {roomTitle} x &#2547;{" "}
+                  <span>{roomBaseRate}</span>/night avg.
                 </p>
+                {/* {isCouponValid ? (
+                  <p className="room-highlight-text room-highlight-text--discounted">
+                    Discounted price: BDT {discountedRoomRate}/night avg.
+                  </p>
+                ) : null} */}
                 <p className="room-meta-details">
-                  Date: {checkInLabel} - {checkOutLabel}
+                  Date: {checkInLabel} - {checkOutLabel}/Night:{" "}
+                  {roomNights || 0} Details: {roomTitle}
                 </p>
 
+                <div className="coupon-container">
+                  <label className="coupon-label" htmlFor="couponInput">
+                    ADD COUPONS
+                  </label>
+                  <div className="coupon-input-group">
+                    <input
+                      id="couponInput"
+                      type="text"
+                      className="coupon-input"
+                      placeholder="Add Code"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="coupon-btn"
+                      onClick={() => setAppliedCoupon(couponInput)}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+
+                {appliedCoupon && !isCouponValid ? (
+                  <p className="coupon-helper window-only">
+                    Coupon code is not valid.
+                  </p>
+                ) : null}
+
                 {/* Total price section built into the info block for mobile matching */}
+                {/* Inside your room-info div */}
                 <div className="mobile-total-display">
                   <span className="total-label">TOTAL: </span>
-                  <span className="total-amount">৳ {totalAmount}</span>
+                  {isCouponValid ? (
+                    <div className="mobile-price-row">
+                      <span className="total-price-original crossed-line">
+                        ৳{perBookingBaseAmount * roomCount}
+                      </span>
+                      <span
+                        className={`total-price-discounted ${isCouponValid ? "total-price-discounted--active" : ""}`}
+                      >
+                        =৳ {totalAmount}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="total-price-main">৳ {totalAmount}</span>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Desktop-only total view */}
-            <div className="total-price-display">BDT {totalAmount}</div>
+            {/* <div className="total-price-display">BDT {totalAmount}</div> */}
+            <div className="total-price-block">
+              {isCouponValid && (
+                <span className="total-original-price">
+                  &#2547; {perBookingBaseAmount * roomCount}
+                </span>
+              )}
+              <span
+                className={`total-final-price ${isCouponValid ? "total-final-price--discounted" : ""}`}
+              >
+                =&#2547; {totalAmount}
+              </span>
+            </div>
           </div>
 
+          {/* Coupon sits separately below on mobile */}
+          <div className="coupon-section">
+            <div className="coupon-container-2">
+              <label className="coupon-label" htmlFor="couponInput">
+                ADD COUPONS
+              </label>
+              <div className="coupon-input-group">
+                <input
+                  id="couponInput"
+                  type="text"
+                  className="coupon-input"
+                  placeholder="Add Code"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="coupon-btn"
+                  onClick={() => setAppliedCoupon(couponInput)}
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+            {appliedCoupon && !isCouponValid ? (
+              <p className="coupon-helper mobile-only">
+                Coupon code is not valid.
+              </p>
+            ) : null}
+          </div>
           <div className="payment-instruction-box">
             <p className="instruction-main-text">
               To confirm your reservation please send a minimum advance of BDT

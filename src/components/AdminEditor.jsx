@@ -532,6 +532,8 @@ export default function AdminEditor({ view }) {
               description: item.description || null,
               extended_title: item.extended_title || item.extendedTitle || null,
               price: normalizePrice(item.price),
+              coupon_code: item.coupon_code || null,
+              discount_value: normalizePrice(item.discount_value),
               tags: item.tags || null,
               images: item.images || null,
             };
@@ -562,6 +564,8 @@ export default function AdminEditor({ view }) {
                 description: a.description || null,
                 images: a.images || null,
                 price: a.price ?? null,
+                coupon_code: a.coupon_code ?? null,
+                discount_value: a.discount_value ?? null,
               };
 
               const { data: existingPage } = await supabase
@@ -989,6 +993,8 @@ export default function AdminEditor({ view }) {
                       description: "",
                       extended_title: "",
                       price: "",
+                      coupon_code: "",
+                      discount_value: "",
                       tags: [],
                       images: [],
                     })
@@ -1056,6 +1062,37 @@ export default function AdminEditor({ view }) {
                           "accommodations",
                           i,
                           "price",
+                          e.target.value,
+                        )
+                      }
+                    />
+                  </label>
+                  <label className="calendar-admin-field">
+                    <span>Coupon code</span>
+                    <input
+                      value={acc.coupon_code || ""}
+                      onChange={(e) =>
+                        handleListChange(
+                          "accommodations",
+                          i,
+                          "coupon_code",
+                          e.target.value,
+                        )
+                      }
+                    />
+                  </label>
+                  <label className="calendar-admin-field">
+                    <span>Discount value</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={acc.discount_value ?? ""}
+                      onChange={(e) =>
+                        handleListChange(
+                          "accommodations",
+                          i,
+                          "discount_value",
                           e.target.value,
                         )
                       }

@@ -39,7 +39,7 @@
 .sect-container {
   max-width: 1200px;
   margin: 0 auto 40px;
-  padding: 20px 40px;
+  padding: 0px 40px;
 }
 
 .section-title {
@@ -55,14 +55,13 @@
 .purple-card-panel {
   background-color: #6547db;
   padding: 60px;
-  border-radius: 4px;
+
   box-shadow: 0 4px 12px rgba(99, 66, 231, 0.15);
 }
 
 .purple-card-guest {
   background-color: #6547db;
   padding: 60px 170px;
-  border-radius: 4px;
   box-shadow: 0 4px 12px rgba(99, 66, 231, 0.15);
 }
 
@@ -148,7 +147,7 @@
 }
 
 .proceed-btn {
-  background-color: #6342e7;
+  background-color: #6547db;
   color: white;
   border: none;
   padding: 14px 36px;
@@ -182,8 +181,8 @@
   box-shadow: 0 10px 30px rgba(101, 71, 219, 0.08);
 }
 
-.booking-room-image-wrap img,
-.room-image-preview {
+.booking-room-image-wrap img
+/* .room-image-preview  */ {
   width: 100%;
   height: 140px;
   object-fit: cover;
@@ -316,38 +315,39 @@
   }
 
   .sect-container {
-    padding: 15px 20px;
+    padding: 0px 20px;
+    margin: 0px;
   }
 }
-
 @media (max-width: 480px) {
   .grid-4-col {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* important fix */
+  .grid-4-col > * {
+    min-width: 0;
+  }
+
+  .input-transparent {
+    padding: 10px 8px;
+    font-size: 13px;
   }
 
   .purple-card-panel {
-    padding: 20px 15px;
+    padding: 20px 12px;
+    overflow: hidden;
   }
 
   .purple-card-guest {
     padding: 20px 15px;
   }
-
-  .sect-container {
-    padding: 10px 15px;
+  .booking-page-wrapper {
+    padding: 10px 0px;
   }
 
-  .hero-title {
-    font-size: 1.8rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .proceed-btn {
-    width: 100%;
-    justify-content: center;
+  .submit-container {
+    margin-bottom: 30px;
   }
 }

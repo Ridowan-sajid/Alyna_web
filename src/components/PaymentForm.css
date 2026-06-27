@@ -35,8 +35,8 @@
 }
 
 .room-image-preview {
-  width: 90px;
-  height: 70px;
+  width: 120px;
+  height: 100px;
   object-fit: cover;
   border-radius: 2px;
   flex-shrink: 0;
@@ -57,36 +57,64 @@
 }
 
 .room-info h3 {
-  color: #ff6b00; /* Muted orange heading */
+  color: #f27405; /* Muted orange heading */
   font-size: 16px;
   margin: 0 0 4px 0;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .room-highlight-text {
-  color: #6342e7;
+  color: #6547db;
   font-size: 14px;
   font-weight: 700;
   margin: 0 0 4px 0;
 }
 
 .room-meta-details {
-  color: #8a8a8a;
-  font-size: 12px;
+  color: #9d9ba4;
+  font-size: 14px;
   margin: 0;
+  font-weight: 600;
 }
 
-.total-price-display {
+/* Desktop total price block */
+.total-price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.total-original-price {
+  position: relative;
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 600;
+  color: #6547db;
+}
+
+.total-original-price::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  background-color: #e24b4a;
+  transform: rotate(-12deg);
+  transform-origin: center;
+}
+
+.total-final-price {
   font-size: 20px;
   font-weight: 700;
-  color: #6342e7;
+  color: #6547db;
 }
 
 /* --- MAIN PURPLE CONTAINER --- */
 .payment-instruction-box {
-  background-color: #6342e7;
+  background-color: #6547db;
   padding: 30px;
-  border-radius: 4px;
   color: white;
 }
 
@@ -107,7 +135,7 @@
 }
 
 .step-card {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #7269de;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   padding: 20px 16px;
@@ -119,8 +147,8 @@
 }
 
 .step-badge {
-  background-color: #ffd600; /* Bright yellow */
-  color: #333;
+  background-color: #f2c705; /* Bright yellow */
+  color: #6547db;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -147,7 +175,7 @@
 }
 
 .gateway-card {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: #7269de;
   border-radius: 4px;
   padding: 14px;
   display: flex;
@@ -167,7 +195,7 @@
 
 .gateway-card--selected {
   outline-color: rgba(255, 255, 255, 0.85);
-  background-color: rgba(255, 255, 255, 0.18);
+  background-color: #7269de;
 }
 
 .gateway-identity {
@@ -265,9 +293,9 @@
 }
 
 .terms-link {
-  color: #f2c705;
-  text-decoration: underline;
+  color: #0099ff;
   font-weight: 600;
+  text-decoration: none;
 }
 
 /* Confirm Action Button */
@@ -278,8 +306,8 @@
 }
 
 .confirm-submit-btn {
-  background-color: #00b000; /* Solid Green */
-  color: white;
+  background-color: #41c400; /* Solid Green */
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   padding: 12px 32px;
@@ -290,6 +318,7 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 176, 0, 0.2);
   transition: background-color 0.2s;
+  margin-bottom: 30px;
 }
 
 .confirm-submit-btn:hover {
@@ -344,11 +373,82 @@
 .mobile-total-display .total-amount {
   color: #ff6b00;
 }
+
+/* Container for the entire coupon section */
+.coupon-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: sans-serif; /* Adjust to match your project's main font */
+}
+
+/* "ADD COUPONS" Label */
+.coupon-label {
+  color: #6547db; /* The vibrant purple shade from the image */
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Wrapper to hold input and button cleanly together */
+.coupon-input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The Text Input Field */
+.coupon-input {
+  border: 1px solid #9c82ef; /* Light purple border matching the image */
+  border-radius: 2px;
+  padding: 6px 10px;
+  font-size: 14px;
+  outline: none;
+  width: 140px; /* Adjust width as needed */
+  color: #333;
+}
+
+.coupon-input::placeholder {
+  color: #a0a0a0; /* Subtle gray placeholder text */
+}
+
+/* The "Apply" Button */
+.coupon-btn {
+  background-color: #ef7407; /* The bright orange background */
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 19px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.coupon-btn:hover {
+  background-color: #d66400; /* Darkens slightly on hover */
+}
+.coupon-container-2 {
+  display: none;
+}
+.total-final-price--discounted {
+  color: #f27405;
+}
+
+.mobile-only {
+  display: none;
+}
+.window-only {
+  display: block;
+}
 /* --- RESPONSIVE ADJUSTMENTS (MOBILE) --- */
 @media (max-width: 768px) {
   .room-detail-container {
     flex-direction: column;
     gap: 16px;
+    margin-bottom: 0px;
   }
 
   .room-left-block {
@@ -358,7 +458,6 @@
     align-items: flex-start;
   }
 
-  /* Make image responsive but keeping square ratio as image_f5d69a.png */
   .room-image-preview,
   .room-image-placeholder {
     width: 110px;
@@ -408,5 +507,138 @@
 
   .payment-page-wrapper {
     padding: 20px;
+  }
+}
+
+/* --- RESPONSIVE ADJUSTMENTS (MOBILE) --- */
+@media (max-width: 768px) {
+  .room-left-block {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .room-image-preview,
+  .room-image-placeholder {
+    width: 110px;
+    height: 110px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Force the coupon container to split cleanly onto a row below */
+  .coupon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 16px;
+    clear: both;
+  }
+
+  .coupon-input-group {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+  }
+
+  .coupon-input {
+    flex-grow: 1; /* Makes input span the width minus the button */
+    width: auto;
+  }
+
+  /* Desktop-only view remains hidden */
+  .total-price-display {
+    display: none;
+  }
+
+  /* Target the inline elements matching image_988f0f.png */
+  .mobile-total-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0px;
+  }
+
+  .mobile-total-display .total-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+  }
+
+  .mobile-price-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .total-price-original {
+    font-size: 15px;
+    font-weight: 700;
+    color: #6342e7;
+    position: relative;
+  }
+
+  /* Striking a line across the original price */
+  .total-price-original.crossed-line::after {
+    content: "";
+    position: absolute;
+    left: -5%;
+    top: 50%;
+    width: 110%;
+    height: 2px;
+    background-color: #ef7407;
+    transform: rotate(-6deg);
+  }
+
+  .total-price-main {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6547db;
+    margin-top: 0; /* Keep baseline level on mobile row */
+  }
+  .coupon-container {
+    display: none;
+  }
+  .coupon-container-2 {
+    padding-bottom: 20px;
+    display: block;
+  }
+  .total-price-block {
+    display: none;
+  }
+
+  .total-price-discounted--active {
+    color: #f27405;
+  }
+  .window-only {
+    display: none;
+  }
+  .mobile-only {
+    display: block;
+  }
+  .room-info h3 {
+    font-size: 12;
+  }
+  .room-highlight-text {
+    font-size: 12px;
+  }
+  .room-meta-details {
+    font-size: 12px;
+  }
+  .coupon-label {
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .terms-link {
+    color: #f2c705;
+  }
+  .txid-input {
+    width: 92%;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    display: block;
   }
 }

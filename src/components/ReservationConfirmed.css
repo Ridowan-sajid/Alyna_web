@@ -5,7 +5,7 @@
   align-items: center;
   min-height: 100vh;
   background-color: #f3f0ff; /* Soft pastel purple background */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
   margin: 0;
   padding: 20px;
   box-sizing: border-box;
@@ -65,30 +65,29 @@
 
 /* --- Typography --- */
 .reservation-title {
-  color: #513894; /* Deep purple */
-  font-size: 2.2rem;
+  color: #5c3393; /* Deep purple */
+  font-size: 2rem;
   font-weight: 700;
   margin: 0 0 16px 0;
 }
 
 .reservation-message {
-  color: #6a52b5; /* Slightly lighter purple for text */
+  color: #5c3393; /* Slightly lighter purple for text */
   font-size: 1.2rem;
   line-height: 1.6;
-  font-weight: 500;
   margin: 0 0 40px 0;
-  max-width: 90%;
+  max-width: 100%;
   display: inline-block;
 }
 
 /* --- Button Styling --- */
 .back-btn {
-  background-color: #6347d1; /* Royal purple */
+  background-color: #6547db; /* Royal purple */
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  padding: 14px 28px;
-  font-size: 0.95rem;
+  padding: 11px 28px;
+  font-size: 0.7rem;
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.5px;
@@ -111,4 +110,14 @@
 
 .arrow {
   font-size: 1.1rem;
+}
+@media (max-width: 768px) {
+  .reservation-title {
+    font-size: 25px;
+  }
+  .reservation-message {
+    font-size: 17px;
+  }
+  .reservation-card {
+  }
 }
