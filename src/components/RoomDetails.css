@@ -378,6 +378,9 @@
     transform: rotate(0deg) scale(1);
   }
 }
+.mobile-btn {
+  display: none;
+}
 
 /* Responsive Mobile Style */
 @media (max-width: 768px) {
@@ -463,4 +466,9 @@
     background: white;
     padding: 10px;
   } */
+  .mobile-btn {
+    display: block;
+    width: 80%; /* same as desktop */
+    margin: 20px auto 0 auto; /* centers it */
+  }
 }

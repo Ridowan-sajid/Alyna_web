@@ -203,6 +203,28 @@ const RoomDetails = () => {
                 }
               />
             </div>
+
+            <button
+              type="button"
+              className="book-now-btn mobile-btn"
+              onClick={() => {
+                if (!acc?.id) return;
+                const roomSnapshot = buildRoomSnapshot({
+                  ...acc,
+                  image: mainImage || acc?.images?.[0],
+                });
+                saveBookingDraft(buildBookingDraft(roomSnapshot, {}));
+                navigate("/book", {
+                  state: {
+                    room: roomSnapshot,
+                    source: "room-details",
+                  },
+                });
+              }}
+            >
+              BOOK NOW
+            </button>
+
             <div
               className="booking-card-container scroll-animate"
               style={{ display: "none" }}

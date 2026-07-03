@@ -974,6 +974,19 @@ export default function AdminEditor({ view }) {
               />
             </label>
 
+            <div style={{ marginTop: 8 }}>
+              <SupabaseImageUploader
+                label="Offer popup image"
+                value={(data.content && data.content.offer_image) || ""}
+                onChange={(v) =>
+                  handleChange("content", {
+                    ...(data.content || {}),
+                    offer_image: v,
+                  })
+                }
+              />
+            </div>
+
             <hr />
 
             <div>

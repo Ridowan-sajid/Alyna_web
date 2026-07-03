@@ -17,7 +17,11 @@ const BookingCard = ({ price = 2000, onBookNow }) => {
         </div>
       </div>
 
-      <button type="button" className="book-now-btn" onClick={onBookNow}>
+      <button
+        type="button"
+        className="book-now-btn desktop-btn"
+        onClick={onBookNow}
+      >
         BOOK NOW
       </button>
     </div>

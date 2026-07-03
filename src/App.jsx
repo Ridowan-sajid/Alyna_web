@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import BookingForm from "./components/BookingForm";
 import PaymentForm from "./components/PaymentForm";
 import ReservationConfirmed from "./components/ReservationConfirmed";
+import OfferPopup from "./components/OfferPopup";
 
 function App() {
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
           <ScrollToTop />
           <ScrollReveal />
           <Header />
+          <OfferPopup />
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
