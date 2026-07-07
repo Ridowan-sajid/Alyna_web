@@ -7,6 +7,11 @@
   justify-content: center;
   z-index: 2000;
   padding: 20px;
+
+  /* start transparent, fade in AFTER the card has appeared */
+  background: rgba(0, 0, 0, 0);
+  animation: offerBackdropFadeIn 0.3s ease forwards;
+  animation-delay: 0.25s; /* waits for card animation below to mostly finish */
 }
 
 .offer-popup-card {
@@ -17,6 +22,11 @@
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+  /* card pops in first, immediately */
+  opacity: 0;
+  transform: scale(0.92);
+  animation: offerCardPopIn 0.25s ease forwards;
 }
 
 .offer-popup-image {
@@ -45,4 +55,50 @@
   padding: 32px 24px;
   text-align: center;
   color: #333;
+}
+.offer-sticky-banner {
+  position: fixed;
+  bottom: 5px;
+  right: 7px;
+  /* width: 280px; */
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.offer-sticky-banner img {
+  width: 100%;
+  display: block;
+}
+
+.offer-sticky-banner button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+}
+
+@keyframes offerBackdropFadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes offerCardPopIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

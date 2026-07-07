@@ -987,6 +987,19 @@ export default function AdminEditor({ view }) {
               />
             </div>
 
+            <div style={{ marginTop: 8 }}>
+              <SupabaseImageUploader
+                label="Sticky banner image"
+                value={(data.content && data.content.banner_image) || ""}
+                onChange={(v) =>
+                  handleChange("content", {
+                    ...(data.content || {}),
+                    banner_image: v,
+                  })
+                }
+              />
+            </div>
+
             <hr />
 
             <div>
