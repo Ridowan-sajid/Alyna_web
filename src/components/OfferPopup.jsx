@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import "./OfferPopup.css";
 
@@ -12,10 +12,44 @@ export default function OfferPopup() {
   const [showSticky, setShowSticky] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [bannerImageUrl, setBannerImageUrl] = useState("");
+  const bannerRef = useRef(null);
 
   useEffect(() => {
     let mounted = true;
     let timer;
+
+    const updateBannerHeight = () => {
+      if (!mounted) return;
+
+      const height = showSticky && bannerImageUrl && bannerRef.current
+        ? bannerRef.current.offsetHeight
+        : 0;
+
+      document.documentElement.style.setProperty(
+        "--offer-sticky-banner-height",
+        `${height}px`
+      );
+    };
+
+    const appRoot = document.querySelector(".app");
+
+    if (showSticky && bannerImageUrl) {
+      appRoot?.classList.add("has-offer-sticky-banner");
+    } else {
+      appRoot?.classList.remove("has-offer-sticky-banner");
+    }
+
+    updateBannerHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateBannerHeight();
+    });
+
+    if (bannerRef.current) {
+      resizeObserver.observe(bannerRef.current);
+    }
+
+    window.addEventListener("resize", updateBannerHeight);
 
     const loadOfferImage = async () => {
       try {
@@ -68,8 +102,14 @@ export default function OfferPopup() {
     return () => {
       mounted = false;
       clearTimeout(timer);
+      window.removeEventListener("resize", updateBannerHeight);
+      document.querySelector(".app")?.classList.remove("has-offer-sticky-banner");
+      document.documentElement.style.setProperty(
+        "--offer-sticky-banner-height",
+        "0px"
+      );
     };
-  }, []);
+  }, [bannerImageUrl, showSticky]);
 
   const closePopup = () => {
     window.localStorage.setItem(STORAGE_KEY, String(Date.now()));
@@ -112,7 +152,7 @@ export default function OfferPopup() {
       )}
 
       {showSticky && bannerImageUrl && (
-        <div className="offer-sticky-banner">
+        <div className="offer-sticky-banner" ref={bannerRef}>
           <img src={bannerImageUrl} alt="Offer banner" />
           <button onClick={closeSticky}>×</button>
         </div>

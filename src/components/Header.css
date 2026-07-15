@@ -6,6 +6,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: top 0.2s ease;
 }
 
 .navbar {

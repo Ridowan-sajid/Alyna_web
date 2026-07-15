@@ -20,6 +20,7 @@ const Icons = {
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [roomOpen, setRoomOpen] = useState(false);
+  const [headerOffset, setHeaderOffset] = useState(0);
 
   const location = useLocation();
   const hoverTimer = useRef(null);
@@ -97,6 +98,37 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const updateHeaderOffset = () => {
+      const height = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--offer-sticky-banner-height"
+        ) || "0"
+      );
+      setHeaderOffset(height || 0);
+    };
+
+    updateHeaderOffset();
+    window.addEventListener("resize", updateHeaderOffset);
+    window.addEventListener("scroll", updateHeaderOffset, { passive: true });
+
+    const observer = new MutationObserver(() => {
+      updateHeaderOffset();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["style"],
+      subtree: false,
+    });
+
+    return () => {
+      window.removeEventListener("resize", updateHeaderOffset);
+      window.removeEventListener("scroll", updateHeaderOffset);
+      observer.disconnect();
+    };
+  }, [location.pathname]);
+
   const handleRoomsMouseEnter = () => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
     setRoomOpen(true);
@@ -113,7 +145,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="header">
+      <header className="header" style={{ top: `${headerOffset}px` }}>
         <nav className="navbar">
           <NavLink to="/" className="logo">
             <img src="/Svg/header_logo.svg" alt="Logo" />

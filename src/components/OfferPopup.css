@@ -56,10 +56,18 @@
   text-align: center;
   color: #333;
 }
+:root {
+  --offer-sticky-banner-height: 0px;
+}
+
+.app.has-offer-sticky-banner {
+  padding-top: var(--offer-sticky-banner-height);
+}
+
 .offer-sticky-banner {
   position: fixed;
-  bottom: 5px;
-  right: 7px;
+  top: 0;
+  right: 0px;
   /* width: 280px; */
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
