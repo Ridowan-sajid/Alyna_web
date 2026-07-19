@@ -25,6 +25,7 @@ import BookingForm from "./components/BookingForm";
 import PaymentForm from "./components/PaymentForm";
 import ReservationConfirmed from "./components/ReservationConfirmed";
 import OfferPopup from "./components/OfferPopup";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   useEffect(() => {
@@ -63,6 +64,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <WhatsAppButton />
           <Analytics />
         </div>
       </CalendarProvider>
